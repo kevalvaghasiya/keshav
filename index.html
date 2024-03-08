@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>PDF with Double Line Border using html2pdf</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.3.2/html2canvas.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.3.1/jspdf.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.3/html2pdf.bundle.min.js"></script>
+  <script src="https://cdn.ckeditor.com/4.16.0/standard/ckeditor.js"></script>
+  <script src="https://unpkg.com/realm-web"></script>
+  <script src="./main.js" type="text/javascript" defer></script>
+  <link href="./style.css" rel="stylesheet" type="text/css">
+</head>
+
+<body>
+  <div class="container">
+    <div class="box">
+      <a href="/itinerary.html">create itinerary</a>
+      <form>
+        <label for="name">Destination:</label>
+        <input id="c_destination" oninput="handleChange('destination')" />
+
+        <label for="name">Customer Name:</label>
+        <input id="c_nm" oninput="handleChange('name')" />
+
+        <label for="email">From:</label>
+        <input type="date" id="fromDate">
+
+        <label for="email">To:</label>
+        <input type="date" id="toDate">
+
+        <label for="name">Duration:</label>
+        <input id="c_duration" oninput="handleChange('duration')" />
+
+        <label for="name">Number of Member:</label>
+        <input id="c_mmbr" type="number" oninput="handleChange('number')" />
+
+        <label for="name">Arrival:</label>
+        <input id="c_arrival" oninput="handleChange('arrival')" />
+
+        <label for="name">Departure:</label>
+        <input id="c_departure" oninput="handleChange('departure')" />
+
+        <div style="margin-top: 20px;">
+          <label for="name">Hotel:</label>
+          <div style="display: flex;" class="table-div">
+            <input id="c_place" placeholder="destination" oninput="handleChange('departure')" />
+            <input id="c_htl" placeholder="hotel name" oninput="handleChange('departure')" />
+            <input id="c_room" placeholder="room category" oninput="handleChange('departure')" />
+            <input id="c_ngt" placeholder="nights" oninput="handleChange('departure')" />
+            <input id="c_htl_typ" placeholder="hotel type" oninput="handleChange('departure')" />
+            <input value="Add" type="button" id="tbl_htl_btn" onclick="addHotelData()" style="cursor: pointer;" />
+          </div>
+        </div>
+
+        <table class="styled-table" style="margin: 40px 0px 40px 0px;">
+          <thead>
+            <tr>
+              <th>Destination</th>
+              <th>Hotel Name</th>
+              <th>Room</th>
+              <th>Nights</th>
+              <th>Hotel</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody id="hotal_list">
+
+          </tbody>
+        </table>
+
+        <label for="name">Package Includes:</label>
+        <textarea id="include"></textarea>
+
+        <label for="name">Package Excludes:</label>
+        <textarea id="exclude"></textarea>
+
+        <label for="name">Itinerary: <div style="margin-top: 10px;" id="list_option"></div></label>
+        <textarea id="itinerary"></textarea>
+
+        <label for="name">Note:</label>
+        <textarea id="note"></textarea>
+
+      </form>
+
+
+    </div>
+    <div id="outer" class="box">
+      <div id="content">
+        <div>
+          <img style="height: 110px; display: table; margin: 0 auto;" src="/lg.jpg" />
+          <!-- <img style="height: 150px; display: table; margin: 0 auto;" src="/keshav.png" /> -->
+          <p style="height: 20px;  display: table; margin: 0 auto;font-weight: 700;">DESTINATION: <span
+              style="text-transform: uppercase;" id="pkg_sedti"></span></p>
+
+          <p>Dear: <span id="cmr_name" style="color: black; font-weight: 600;"></span></p>
+
+          <p>
+            <!-- Greeting from <span style="color: #41c136; font-weight: 600;" id="cmp_name">Keshav Tour</span> -->
+            Greeting from <span style="color: #41c136; font-weight: 600;" id="cmp_name">Keshav tour</span>
+            <br>
+            Thank you for your enquiry. Please find below the holiday package designed exclusively for you.
+          </p>
+
+          <p>
+            <span style="color: black; font-weight: 700;">Dates</span>: <span id="pckg_date"></span>
+          </p>
+
+          <p>
+            <span style="color: black; font-weight: 700;">Duration</span>: <span id="drtn_txt"></span>
+          </p>
+
+          <p>
+            <span style="color: black; font-weight: 700;">No of Persons</span>: <span id="prson_cnt"></span>
+          </p>
+
+          <p>
+            <span style="color: black; font-weight: 700;">Arrival</span>: <span id="start_point"></span>
+          </p>
+
+          <p>
+            <span style="color: black; font-weight: 700;">Departure</span>: <span id="and_point"></span>
+          </p>
+
+
+
+          <p style="margin-top: 50px;">
+            <span style="color: black; font-weight: 700; border-bottom: 1px solid;">Hotels suggested for the above
+              package.</span>
+          </p>
+
+          <div id="hotal_block">
+            <table class="styled-table" style="margin: 40px 0px 40px 0px;">
+              <thead>
+                <tr>
+                  <th>Destination</th>
+                  <th>Hotel Name</th>
+                  <th>Room</th>
+                  <th>Nights</th>
+                  <th>Hotel</th>
+                </tr>
+              </thead>
+              <tbody id="hotal_body_tr">
+
+              </tbody>
+            </table>
+
+            <p>MAP: Room + Breakfast + Lunch/ Dinner only</p>
+            <p>AP : Room + Brekfast + Lunch+Dinner</p>
+            <p style="margin-top: 50px; color: black; font-weight: 700;">Rooms are subject to availability at the time
+              of
+              booking as per the availability of the hotels, the
+              quotation may change, kindly note the same</p>
+          </div>
+
+
+
+          <div id="pckg_incld">
+            <p style="margin: 40px 0px 40px 0px; color: black; font-weight: 700;">Package Includes:</p>
+
+            <div style="margin-top:10px;" id="incld_data"></div>
+          </div>
+
+          <div id="pckg_excld">
+            <p style="margin: 40px 0px 40px 0px; color: black; font-weight: 700;">Package Excludes:</p>
+
+            <div style="margin-top:20px;" id="excld_data"></div>
+          </div>
+
+          <p style="margin-top: 50px;">
+            <span style="color: black; font-weight: 700; border-bottom: 1px solid;">Itinerary</span>
+          </p>
+
+
+          <div id="shdual_block">
+            <!-- <div style="margin-top: 40px;">
+                                  <p><span style="color: black; font-weight: 700;">Day: {{DAY}} <span id="day_1">{{PLACE}}</span></p>
+                                  <p>{{EVENT_DESC}}</p>
+                                
+                                </div> -->
+          </div>
+
+          <div id="pckg_note">
+            <p style="margin: 40px 0px 40px 0px; color: black; font-weight: 700;">Notes:</p>
+
+            <div style="margin-top:20px;" id="note_data"></div>
+          </div>
+
+
+        </div>
+      </div>
+    </div>
+    <button onclick="generatePDF()">Generate PDF</button>
+
+  </div>
+
+
+</body>
+
+</html>
